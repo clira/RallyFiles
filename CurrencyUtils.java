@@ -27,15 +27,23 @@ public class CurrencyUtils
 
 	public static String getWrittenString(double doubleParam)
 	{
+		if (doubleParam < 0 || doubleParam > 999999999.99)
+		{
+			throw new IllegalArgumentException(bundle.getString("illegalArg"));
+		}
 		// split into whole number and decimal parts
 		int intPart = (int) doubleParam;
 		double decimalPartRaw = doubleParam - intPart;
 		int decimalPart = (int) Math.round(decimalPartRaw * 100);
-		StringBuilder builder = new StringBuilder();
-		// handle the whole number part
+		
+
+		// handle the whole number part, then format it
 		String firstPart = handleIntPart(intPart, new StringBuilder());
 		firstPart = firstPart.replace("  ", " ");
 		String capitalizedString = firstPart.substring(0, 1).toUpperCase() + firstPart.substring(1);
+		
+		//create a new builder, add what we already have, then use it for the decimal part
+		StringBuilder builder = new StringBuilder();
 		builder.append(capitalizedString);
 		// handle the decimal part
 		builder.append(handleDecimalPart(decimalPart));
@@ -54,7 +62,7 @@ public class CurrencyUtils
 		{
 			handleDigitGroup(number, builder);
 		}
-		else
+		else if (number < 1000000)
 		{
 			//get the number of thousands and append with proper label
 			currentDigitGroup = number / 1000;
@@ -64,6 +72,17 @@ public class CurrencyUtils
 			builder.append(" ");
 			//recurse for the final 3 digits
 			handleIntPart(number % 1000, builder);
+		}
+		else 
+		{
+			//get the number of millions and append with proper label
+			currentDigitGroup = number / 1000000;
+			handleDigitGroup(currentDigitGroup, builder);
+			builder.append(" ");
+			builder.append(bundle.getString("millionKey"));
+			builder.append(" ");
+			//recurse for the thousands
+			handleIntPart(number % 1000000, builder);
 		}
 		
 		return builder.toString().trim();

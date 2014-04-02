@@ -84,7 +84,37 @@ public class CurrencyUtilsTest
 	
 		writtenString = CurrencyUtils.getWrittenString(700221.65);
 		assertEquals("Seven hundred thousand two hundred twenty-one and 65/100 dollars", writtenString);
+	}
 	
+	@Test
+	public void testGetWrittenStringHundredMillionWithDecimal()
+	{
+		String writtenString = CurrencyUtils.getWrittenString(615314000.65);
+		assertEquals("Six hundred fifteen million three hundred fourteen thousand and 65/100 dollars", writtenString);
+		
+		writtenString = CurrencyUtils.getWrittenString(700217220.65);
+		assertEquals("Seven hundred million two hundred seventeen thousand two hundred twenty and 65/100 dollars", writtenString);
+	
+		writtenString = CurrencyUtils.getWrittenString(943654989.65);
+		assertEquals("Nine hundred forty-three million six hundred fifty-four thousand nine hundred eighty-nine and 65/100 dollars", writtenString);
+	
+		writtenString = CurrencyUtils.getWrittenString(550654989.65);
+		assertEquals("Five hundred fifty million six hundred fifty-four thousand nine hundred eighty-nine and 65/100 dollars", writtenString);
+	
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testNegativeNumber()
+	{		
+		CurrencyUtils.getWrittenString(-567.44);
+		fail();
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testExceededBoundary()
+	{		
+		CurrencyUtils.getWrittenString(1111111111);
+		fail();
 	}
 
 }
