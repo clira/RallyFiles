@@ -28,6 +28,9 @@ public class CurrencyUtilsTest
 		
 		writtenString = CurrencyUtils.getWrittenString(4);
 		assertEquals("Four and 0/100 dollars", writtenString);
+		
+		writtenString = CurrencyUtils.getWrittenString(0.65);
+		assertEquals("Zero and 65/100 dollars", writtenString);
 	}
 	
 	@Test
@@ -49,6 +52,22 @@ public class CurrencyUtilsTest
 	{
 		String writtenString = CurrencyUtils.getWrittenString(14.65);
 		assertEquals("Fourteen and 65/100 dollars", writtenString);
+	}
+	
+	@Test
+	public void testGetWrittenStringHundredsWithDecimal()
+	{
+		String writtenString = CurrencyUtils.getWrittenString(314.65);
+		assertEquals("Three hundred fourteen and 65/100 dollars", writtenString);
+		
+		writtenString = CurrencyUtils.getWrittenString(307.65);
+		assertEquals("Three hundred seven and 65/100 dollars", writtenString);
+		
+		writtenString = CurrencyUtils.getWrittenString(330.65);
+		assertEquals("Three hundred thirty and 65/100 dollars", writtenString);
+		
+		writtenString = CurrencyUtils.getWrittenString(300.65);
+		assertEquals("Three hundred and 65/100 dollars", writtenString);
 	}
 
 }

@@ -45,8 +45,18 @@ public class CurrencyUtils
 	{
 		String numString;
 		int currentDigit;
-
-		if (number < 10)
+		if (number == 0 && builder.length() !=0)
+		{
+			/*
+			 * For numbers like 700, 7000, etc. do nothing here, so we don't end
+			 * up with "seven hundred and zero", "seven thousand and zero", etc.
+			 * But if input was 0.37, we need to output "zero" here.
+			 * 
+			 * No-op for clarity.
+			 * 
+			 */
+		}
+		else if (number < 10)
 		{
 			numString = bundle.getString(String.valueOf(number));
 			builder.append(numString);
@@ -57,7 +67,7 @@ public class CurrencyUtils
 			numString = bundle.getString(String.valueOf(number));
 			builder.append(numString);
 		}
-		else
+		else if (number < 100)
 		{
 			currentDigit = number / 10;
 			numString = bundle.getString(String.valueOf(currentDigit) + "_decadeKey");
@@ -74,8 +84,20 @@ public class CurrencyUtils
 				handleDigitGroup(number % 10, builder);
 			}
 		}
+		else 
+		{
+			//get the number of hundreds and append with proper label
+			currentDigit = number / 100;
+			numString = bundle.getString(String.valueOf(currentDigit));
+			builder.append(numString);
+			builder.append(" ");
+			builder.append(bundle.getString("hundredKey"));
+			builder.append(" ");
+			//recurse for the final 2 digits
+			handleDigitGroup(number % 100, builder);
+		}
 
-		return builder.toString();
+		return builder.toString().trim();
 	}
 
 	private static String handleDecimalPart(int decimalPart)
