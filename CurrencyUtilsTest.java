@@ -11,7 +11,7 @@ public class CurrencyUtilsTest
 	public void testGetWrittenStringSimplest()
 	{
 		String writtenString = CurrencyUtils.getWrittenString(7);
-		assertEquals("seven and 0/100 dollars", writtenString);
+		assertEquals("Seven and 0/100 dollars", writtenString);
 	}
 
 }

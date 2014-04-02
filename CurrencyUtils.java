@@ -33,7 +33,8 @@ public class CurrencyUtils
 		StringBuilder builder = new StringBuilder();
 		// handle the whole number part
 		String firstPart = handleDigitGroup(intPart, new StringBuilder());
-		builder.append(firstPart);
+		String capitalizedString = firstPart.substring(0, 1).toUpperCase() + firstPart.substring(1);
+		builder.append(capitalizedString);
 		// handle the decimal part
 		builder.append(handleDecimalPart(decimalPart));
 		return builder.toString();
