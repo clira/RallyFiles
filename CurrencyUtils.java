@@ -45,8 +45,14 @@ public class CurrencyUtils
 	{
 		String numString;
 		int currentDigit;
-		
+
 		if (number < 10)
+		{
+			numString = bundle.getString(String.valueOf(number));
+			builder.append(numString);
+		}
+		else if (number < 20)
+		// for 11-19, get a string and just return, since last digit is already accounted for
 		{
 			numString = bundle.getString(String.valueOf(number));
 			builder.append(numString);
@@ -55,12 +61,12 @@ public class CurrencyUtils
 		{
 			currentDigit = number / 10;
 			numString = bundle.getString(String.valueOf(currentDigit) + "_decadeKey");
-			//for numbers ending in 0, like 20, 30, etc., simply append the string
+			// for numbers ending in 0, like 20, 30, etc., simply append the string
 			if (number % 10 == 0)
 			{
 				builder.append(numString);
 			}
-			//for non-teen numbers ending 1-9, get the number for the decade digit then recurse for last digit
+			// for non-teen numbers ending 1-9, get the number for the decade digit then recurse for last digit
 			else
 			{
 				builder.append(numString);

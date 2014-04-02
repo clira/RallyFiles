@@ -43,5 +43,12 @@ public class CurrencyUtilsTest
 		String writtenString = CurrencyUtils.getWrittenString(20.65);
 		assertEquals("Twenty and 65/100 dollars", writtenString);
 	}
+	
+	@Test
+	public void testGetWrittenStringTeenWithDecimal()
+	{
+		String writtenString = CurrencyUtils.getWrittenString(14.65);
+		assertEquals("Fourteen and 65/100 dollars", writtenString);
+	}
 
 }
