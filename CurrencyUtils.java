@@ -29,7 +29,8 @@ public class CurrencyUtils
 	{
 		// split into whole number and decimal parts
 		int intPart = (int) doubleParam;
-		double decimalPart = doubleParam - intPart;
+		double decimalPartRaw = doubleParam - intPart;
+		int decimalPart = (int) Math.round(decimalPartRaw * 100);
 		StringBuilder builder = new StringBuilder();
 		// handle the whole number part
 		String firstPart = handleDigitGroup(intPart, new StringBuilder());
@@ -49,15 +50,13 @@ public class CurrencyUtils
 		return builder.toString().trim();
 	}
 
-	private static String handleDecimalPart(double decimalPart)
+	private static String handleDecimalPart(int decimalPart)
 	{
 		StringBuilder builder = new StringBuilder();
-		// truncate off anything beyond 2 decimal places
-		int noDecimal = (int) (decimalPart * 100);
 		builder.append(" ");
 		builder.append(bundle.getString("decimalJunctionKey"));
 		builder.append(" ");
-		builder.append(noDecimal);
+		builder.append(decimalPart);
 		builder.append("/100 ");
 		builder.append(bundle.getString("moneyUnitKey"));
 		return builder.toString();
