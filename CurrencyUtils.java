@@ -44,10 +44,23 @@ public class CurrencyUtils
 	private static String handleDigitGroup(int number, StringBuilder builder)
 	{
 		String numString;
-		numString = bundle.getString(String.valueOf(number));
-		builder.append(numString);
+		int currentDigit;
 
-		return builder.toString().trim();
+		if (number < 10)
+		{
+			numString = bundle.getString(String.valueOf(number));
+			builder.append(numString);
+		}
+		else
+		{
+			currentDigit = number / 10;
+			numString = bundle.getString(String.valueOf(currentDigit) + "_decadeKey");
+			builder.append(numString);
+			builder.append("-");
+			handleDigitGroup(number % 10, builder);
+		}
+
+		return builder.toString();
 	}
 
 	private static String handleDecimalPart(int decimalPart)

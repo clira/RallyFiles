@@ -29,5 +29,12 @@ public class CurrencyUtilsTest
 		writtenString = CurrencyUtils.getWrittenString(4);
 		assertEquals("Four and 0/100 dollars", writtenString);
 	}
+	
+	@Test
+	public void testGetWrittenStringTwoDigitsWithDecimal()
+	{
+		String writtenString = CurrencyUtils.getWrittenString(23.65);
+		assertEquals("Twenty-three and 65/100 dollars", writtenString);
+	}
 
 }
