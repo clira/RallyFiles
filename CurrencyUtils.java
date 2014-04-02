@@ -33,13 +33,49 @@ public class CurrencyUtils
 		int decimalPart = (int) Math.round(decimalPartRaw * 100);
 		StringBuilder builder = new StringBuilder();
 		// handle the whole number part
-		String firstPart = handleDigitGroup(intPart, new StringBuilder());
+		String firstPart = handleIntPart(intPart, new StringBuilder());
+		firstPart = firstPart.replace("  ", " ");
 		String capitalizedString = firstPart.substring(0, 1).toUpperCase() + firstPart.substring(1);
 		builder.append(capitalizedString);
 		// handle the decimal part
 		builder.append(handleDecimalPart(decimalPart));
 		return builder.toString();
 	}
+	
+	/*
+	 * Handles successive 3-digit groups from highest to lowest value.
+	 * e.g., XXX,YYY,ZZZ is handled as XXX, then YYY, then ZZZ, recursively, as needed.
+	 */
+	private static String handleIntPart(int number, StringBuilder builder)
+	{
+		int currentDigitGroup;
+		
+		if (number < 1000)
+		{
+			handleDigitGroup(number, builder);
+		}
+		else
+		{
+			//get the number of thousands and append with proper label
+			currentDigitGroup = number / 1000;
+			handleDigitGroup(currentDigitGroup, builder);
+			builder.append(" ");
+			builder.append(bundle.getString("thousandKey"));
+			builder.append(" ");
+			//recurse for the final 3 digits
+			handleIntPart(number % 1000, builder);
+		}
+		
+		return builder.toString().trim();
+	}
+	
+	/*
+	 * Handles a 3 digit-group, unaware of context.  So for XXX,YYY,ZZZ
+	 * it will be called to handle the XXX part by handleIntPart and will return
+	 * a string like "Three hundred forty-two", to which
+	 * handleIntPart will add a " million" label, and call it again for YYY, add 
+	 * a label, then ZZZ. 
+	 */
 
 	private static String handleDigitGroup(int number, StringBuilder builder)
 	{
