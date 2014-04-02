@@ -45,7 +45,7 @@ public class CurrencyUtils
 	{
 		String numString;
 		int currentDigit;
-
+		
 		if (number < 10)
 		{
 			numString = bundle.getString(String.valueOf(number));
@@ -55,9 +55,18 @@ public class CurrencyUtils
 		{
 			currentDigit = number / 10;
 			numString = bundle.getString(String.valueOf(currentDigit) + "_decadeKey");
-			builder.append(numString);
-			builder.append("-");
-			handleDigitGroup(number % 10, builder);
+			//for numbers ending in 0, like 20, 30, etc., simply append the string
+			if (number % 10 == 0)
+			{
+				builder.append(numString);
+			}
+			//for non-teen numbers ending 1-9, get the number for the decade digit then recurse for last digit
+			else
+			{
+				builder.append(numString);
+				builder.append("-");
+				handleDigitGroup(number % 10, builder);
+			}
 		}
 
 		return builder.toString();

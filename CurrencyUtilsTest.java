@@ -36,5 +36,12 @@ public class CurrencyUtilsTest
 		String writtenString = CurrencyUtils.getWrittenString(23.65);
 		assertEquals("Twenty-three and 65/100 dollars", writtenString);
 	}
+	
+	@Test
+	public void testGetWrittenStringTwoDigitsRoundWithDecimal()
+	{
+		String writtenString = CurrencyUtils.getWrittenString(20.65);
+		assertEquals("Twenty and 65/100 dollars", writtenString);
+	}
 
 }
